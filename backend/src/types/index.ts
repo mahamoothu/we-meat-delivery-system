@@ -1,12 +1,11 @@
-import { Request } from 'express';
-import { UserRole } from '@wemeat/shared-types';
+import { AuthenticatedUser } from '@wemeat/shared-types';
 
-export interface AuthenticatedUser {
-  id: string;
-  phone: string;
-  role: UserRole;
+declare global {
+  namespace Express {
+    interface Request {
+      user?: AuthenticatedUser;
+    }
+  }
 }
 
-export interface AuthenticatedRequest extends Request {
-  user?: AuthenticatedUser;
-}
+export * from '@wemeat/shared-types';
