@@ -1,6 +1,6 @@
 /**
  * Foundational Shared Types & Enums
- * (Phase 1 Initialization - Lean Foundation)
+ * WeMeat Monorepo
  */
 
 export enum UserRole {
@@ -32,10 +32,20 @@ export interface ApiResponse<T = unknown> {
   data?: T;
   error?: {
     code: string;
-    message: string;
+    message?: string;
     details?: unknown;
   };
-  timestamp: string;
+  timestamp?: string;
+}
+
+export interface ApiErrorResponse {
+  success: false;
+  message: string;
+  error?: {
+    code: string;
+    details?: unknown;
+  };
+  timestamp?: string;
 }
 
 export interface PaginationParams {
@@ -52,9 +62,16 @@ export interface PaginatedResult<T> {
 }
 
 export interface HealthStatus {
-  status: 'ok' | 'error';
+  status: 'ok' | 'error' | 'healthy' | 'degraded';
   service: string;
   version: string;
   timestamp: string;
   database: 'connected' | 'disconnected' | 'unknown';
+}
+
+export interface AuthenticatedUser {
+  id: string;
+  role: UserRole;
+  phoneNumber?: string;
+  name?: string;
 }

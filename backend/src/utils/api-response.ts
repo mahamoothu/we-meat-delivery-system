@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import type { ApiResponse } from '@wemeat/shared-types';
+import type { ApiResponse, ApiErrorResponse, PaginatedResult } from '@wemeat/shared-types';
 
 export function sendSuccess<T>(
   res: Response,
@@ -23,14 +23,34 @@ export function sendError(
   code = 'INTERNAL_ERROR',
   details?: unknown,
 ): Response {
-  const response: ApiResponse = {
+  const response: ApiErrorResponse = {
     success: false,
+    message,
     error: {
       code,
-      message,
       details,
     },
     timestamp: new Date().toISOString(),
   };
   return res.status(statusCode).json(response);
+}
+
+export function sendPaginated<T>(
+  res: Response,
+  items: T[],
+  total: number,
+  page: number,
+  limit: number,
+  message?: string,
+): Response {
+  const totalPages = Math.ceil(total / limit) || 1;
+  const paginatedData: PaginatedResult<T> = {
+    items,
+    total,
+    page,
+    limit,
+    totalPages,
+  };
+
+  return sendSuccess(res, paginatedData, message);
 }

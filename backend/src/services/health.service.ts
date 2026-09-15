@@ -1,4 +1,4 @@
-import { checkDatabaseConnection } from '../config/db';
+import { checkDatabaseConnection } from '../config/prisma';
 import type { HealthStatus } from '@wemeat/shared-types';
 
 export class HealthService {
@@ -6,7 +6,7 @@ export class HealthService {
     const isDbConnected = await checkDatabaseConnection();
 
     return {
-      status: 'ok',
+      status: isDbConnected ? 'ok' : 'degraded',
       service: 'wemeat-backend',
       version: '0.1.0',
       timestamp: new Date().toISOString(),

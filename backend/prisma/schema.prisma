@@ -1,5 +1,5 @@
 // Prisma Schema for WeMeat Platform
-// Phase 1 - Initialization & Connectivity Foundation
+// Step 2 — Backend Foundation
 
 generator client {
   provider = "prisma-client-js"
@@ -10,11 +10,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// Minimal initial model to verify PostgreSQL connectivity and Prisma migrations
-model HealthRecord {
-  id        String   @id @default(uuid())
-  status    String   @default("ok")
-  checkedAt DateTime @default(now())
+enum UserRole {
+  CUSTOMER
+  SHOP_OWNER
+  ADMIN
+}
 
-  @@map("health_records")
+model User {
+  id          String    @id @default(uuid())
+  phoneNumber String    @unique @map("phone_number")
+  name        String?
+  role        UserRole  @default(CUSTOMER)
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  shops       Shop[]
+
+  @@index([role])
+  @@map("users")
+}
+
+model Shop {
+  id          String    @id @default(uuid())
+  ownerId     String    @map("owner_id")
+  name        String
+  phoneNumber String    @map("phone_number")
+  address     String
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  products    Product[]
+
+  @@index([ownerId])
+  @@index([isActive])
+  @@map("shops")
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  shopId      String    @map("shop_id")
+  name        String
+  description String?
+  price       Decimal   @db.Decimal(10, 2)
+  imageUrl    String?   @map("image_url")
+  isAvailable Boolean   @default(true) @map("is_available")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  shop        Shop      @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@index([shopId])
+  @@index([isAvailable])
+  @@map("products")
 }
