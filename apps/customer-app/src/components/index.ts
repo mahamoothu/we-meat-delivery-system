@@ -1,0 +1,2 @@
+// Component exports foundation
+export {};

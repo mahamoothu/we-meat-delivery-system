@@ -1,0 +1,105 @@
+# -----------------------------------------------------------------------------
+# WeMeat Monorepo .gitignore
+# -----------------------------------------------------------------------------
+
+# Dependencies
+node_modules/
+*/node_modules/
+*/*/node_modules/
+.pnp
+.pnp.js
+.yarn/
+.npm/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+*.env
+*.pem
+*.key
+*.cert
+
+# React Native & Metro
+.expo/
+dist/
+web-build/
+.metro/
+metro-cache/
+.metro-health-check*
+*.orig.*
+
+# Android Native Build & Outputs
+.gradle/
+**/android/.gradle/
+**/android/build/
+**/android/app/build/
+**/android/app/.cxx/
+**/android/.cxx/
+**/android/local.properties
+**/android/**/generated/
+**/android/**/build/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.keystore
+!**/android/app/debug.keystore
+
+# iOS Native Build & Outputs
+**/ios/build/
+**/ios/Pods/
+**/ios/Podfile.lock
+**/ios/*.xcworkspace/xcuserdata/
+**/ios/*.xcodeproj/xcuserdata/
+**/ios/*.xcodeproj/project.xcworkspace/xcuserdata/
+**/ios/DerivedData/
+*.mobileprovision
+*.p8
+*.p12
+
+# Prisma & Databases
+backend/prisma/*.db
+backend/prisma/*.db-journal
+backend/prisma/migrations/dev.db*
+
+# Logs & Diagnostics
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.system_generated/
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+.jest/
+
+# Turbo & Cache
+.turbo/
+.cache/
+
+# IDE & Editors
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.iml
+
+# OS Generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
